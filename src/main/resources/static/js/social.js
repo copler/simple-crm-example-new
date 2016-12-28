@@ -23,7 +23,7 @@ function displaySearchContactsFromFacebook(){
 function searchContactsFromFacebook(event) {
     var query = $("[name=query]").val();
     $.ajax({
-        url: window.socialUrl + "/resources/facebook/search/users?query=" + query,
+        url: window.socialUrl + "/facebook/search/users?query=" + query,
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -34,7 +34,7 @@ function searchContactsFromFacebook(event) {
             data.forEach(function(user){
                 $("container ul").append("<li><a class='edit' href='#' data-id='"+user.id+"'>" + escapeHtml(user.name) +
                     "</a></li>");
-                $("container ul").append("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Small-city-symbol.svg/348px-Small-city-symbol.svg.png' alt='Smiley face' height='42' width='42'>");
+                $("container ul").append("<img src='http://graph.facebook.com/" + user.id + "/picture?type=square' alt='Smiley face' height='50' width='50'>");
             });
             $("a.edit").unbind("click", displayContactAddFromFacebook).bind("click", displayContactAddFromFacebook);
             container.append("</ul>");
@@ -48,13 +48,14 @@ function searchContactsFromFacebook(event) {
 function displayContactAddFromFacebook(clickedElement) {
     var objectId = $(clickedElement.target).attr("data-id");
     $.ajax({
-        url: window.socialUrl + "/resources/facebook/user/" + objectId,
+        url: window.socialUrl + "/facebook/user/" + objectId,
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function(contact) {
             var container = $("container");
             container.empty();
             container.append("<h3>Add Contact From Facebook</h3>");
+            container.append("<img src='http://graph.facebook.com/" + contact.id + "/picture?type=large' alt='Smiley face' __height='100' width='200'>");
             container.append("<form action='#' id='contactAddForm' >");
             $("#contactAddForm").submit(contactAddFormSubmit);
             $("form", container).append("<div class='form-group'><label class='form-label'>First Name:</label> <input class='form-control' type='text' name='firstName' value='" + escapeHtml(contact.firstName) + "'></div>");
