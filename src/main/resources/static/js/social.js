@@ -23,7 +23,7 @@ function displaySearchContactsFromFacebook(){
 function searchContactsFromFacebook(event) {
     var query = $("[name=query]").val();
     $.ajax({
-        url: "/resources/facebook/search/users?query=" + query,
+        url: window.socialUrl + "/resources/facebook/search/users?query=" + query,
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function(data) {
@@ -34,6 +34,7 @@ function searchContactsFromFacebook(event) {
             data.forEach(function(user){
                 $("container ul").append("<li><a class='edit' href='#' data-id='"+user.id+"'>" + escapeHtml(user.name) +
                     "</a></li>");
+                $("container ul").append("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Small-city-symbol.svg/348px-Small-city-symbol.svg.png' alt='Smiley face' height='42' width='42'>");
             });
             $("a.edit").unbind("click", displayContactAddFromFacebook).bind("click", displayContactAddFromFacebook);
             container.append("</ul>");
@@ -47,7 +48,7 @@ function searchContactsFromFacebook(event) {
 function displayContactAddFromFacebook(clickedElement) {
     var objectId = $(clickedElement.target).attr("data-id");
     $.ajax({
-        url: "/resources/facebook/user/" + objectId,
+        url: window.socialUrl + "/resources/facebook/user/" + objectId,
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function(contact) {
@@ -56,10 +57,11 @@ function displayContactAddFromFacebook(clickedElement) {
             container.append("<h3>Add Contact From Facebook</h3>");
             container.append("<form action='#' id='contactAddForm' >");
             $("#contactAddForm").submit(contactAddFormSubmit);
-            $("form", container).append("<p>First Name: <input type='text' name='firstName' value='" + escapeHtml(contact.firstName) + "'></p>");
-            $("form", container).append("<p>Last Name: <input type='text' name='lastName' value='" + escapeHtml(contact.lastName) + "'></p>");
-            $("form", container).append("<p>Phone: <input type='text' name='phone'></p>");
-            $("form", container).append("<p>Email: <input type='text' name='email' value='" + escapeHtml(contact.email) + "'></p>");
+            $("form", container).append("<div class='form-group'><label class='form-label'>First Name:</label> <input class='form-control' type='text' name='firstName' value='" + escapeHtml(contact.firstName) + "'></div>");
+            $("form", container).append("<div class='form-group'><label class='form-label'>Last Name: </label> <input class='form-control' type='text' name='lastName' value='" + escapeHtml(contact.lastName) + "'></div>");
+            $("form", container).append("<div class='form-group'><label class='form-label'>Phone: </label> <input class='form-control' type='text' name='phone'></div>");
+            $("form", container).append("<div class='form-group'><label class='form-label'>Email:</label> <input class='form-control' type='text' name='email' value='" + escapeHtml(contact.email) + "'></div>");
+            $("form", container).append("<div class='form-group'><label class='form-label'>Photo:</label> <input class='form-control' type='text' name='photo'></div>");
             var organizationField = $("<p>Organization: </p>");
             organizationField.append(getOrganizationsSelect());
             $("form", container).append(organizationField);
