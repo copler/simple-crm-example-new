@@ -32,7 +32,7 @@ function displayContactsList(){
 
 				$("ul", container).append("<li><a class='edit' href='#' data-id='"+contact.id+"'>" + escapeHtml(contact.firstName) + " " +
 											escapeHtml(contact.lastName) + "</a>  Organization: " + escapeHtml(organizationName) +
-											"  <a class='btn btn-danger btn-sml btn-delete' href='#' data-id='"+contact.id+"'>Delete</a> </li>");
+											"  <a class='btn btn-danger btn-sml btn-delete delete' href='#' data-id='"+contact.id+"'>Delete</a> </li>");
 
 			});
 			$("a.edit").unbind("click", displayContactEdit).bind("click", displayContactEdit);
@@ -524,7 +524,7 @@ function displayOrganizationsList(){
 
 			data.forEach(function(organization){
 				$("container ul").append("<li><a class='edit' href='#' data-id='"+organization.id+"'>" + escapeHtml(organization.name) +
-											"</a> <a class='delete' href='#' data-id='"+organization.id+"'>Delete</a> </li>");
+											"</a> <a class='btn btn-danger btn-sml btn-delete delete' href='#' data-id='"+organization.id+"'>Delete</a> </li>");
 			});
 			$("a.edit").unbind("click", displayOrganizationEdit).bind("click", displayOrganizationEdit);
 			$("a.delete").unbind("click", deleteOrganization).bind("click", deleteOrganization);
