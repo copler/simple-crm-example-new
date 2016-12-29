@@ -34,7 +34,7 @@ function searchContactsFromFacebook(event) {
             data.forEach(function(user){
                 $("container ul").append("<li><a class='edit' href='#' data-id='"+user.id+"'>" + escapeHtml(user.name) +
                     "</a></li>");
-                $("container ul").append("<img src='http://graph.facebook.com/" + user.id + "/picture?type=square' alt='Smiley face' height='50' width='50'>");
+                $("container ul").append("<img src='" + user.extraData.picture.data.url + "' alt='Smiley face' height='50' width='50'>");
             });
             $("a.edit").unbind("click", displayContactAddFromFacebook).bind("click", displayContactAddFromFacebook);
             container.append("</ul>");
@@ -52,10 +52,11 @@ function displayContactAddFromFacebook(clickedElement) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function(contact) {
+            var pictureUrl =  window.socialUrl + "/facebook/user/" + contact.id + "/picture?type=large";
             var container = $("container");
             container.empty();
             container.append("<h3>Add Contact From Facebook</h3>");
-            container.append("<img src='http://graph.facebook.com/" + contact.id + "/picture?type=large' alt='Smiley face' __height='100' width='200'>");
+            container.append("<img src='" + pictureUrl + "' alt='Smiley face' __height='100' width='200'>");
             container.append("<form action='#' id='contactAddForm' >");
             $("#contactAddForm").submit(contactAddFormSubmit);
             $("form", container).append("<div class='form-group'><label class='form-label'>First Name:</label> <input class='form-control' type='text' name='firstName' value='" + escapeHtml(contact.firstName) + "'></div>");
