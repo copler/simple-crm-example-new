@@ -549,7 +549,10 @@ function errorLogger(xhr, ajaxOptions, thrownErrror){
 
 
 
-function escapeHtml(string) {
+function escapeHtml(aString) {
+
+	if (typeof aString == 'undefined' || aString === null)
+		return "";
 
 	var entityMap = {
 		    "&": "&amp;",
@@ -560,7 +563,7 @@ function escapeHtml(string) {
 		    "/": '&#x2F;'
 	};
 
-	return String(string).replace(/[&<>"'\/]/g, function (s) {
+	return String(aString).replace(/[&<>"'\/]/g, function (s) {
 		return entityMap[s];
 	});
 }
