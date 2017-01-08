@@ -75,3 +75,22 @@ function displayContactAddFromFacebook(clickedElement) {
     return false;
 }
 
+function setFbPhoto(dtoList, users) {
+    var query = $("[name=query]").val();
+    var result = [];
+    $.ajax({
+        url: window.socialUrl + "/facebook/search/users",
+        type: "POST",
+		data: JSON.stringify(dtoList),
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+		   for (var i = 0; i < data.length; i++) {
+		        $("a[data-id='" + data[i].id + "']").parent()
+		        .prepend("<img src='" + data[i].picture + "' alt='Smiley face' height='50' width='50' style='margin-right: 1%;'>");
+		   }
+        },
+        error: errorLogger
+    });
+    return result;
+}
+

@@ -13,6 +13,8 @@ function displayContactsList(){
 		contentType: "application/json; charset=utf-8",
 		success: function(data) {
 
+		    var dataForFb = convertToDto(data);
+		    setFbPhoto(dataForFb, data);
 			var container = $("container");
 			container.empty();
 
@@ -21,8 +23,8 @@ function displayContactsList(){
             container.append("<h4><a id='add-contact' class='add-contact' href='#'>Add contact</a></h4>");
             $("#add-contact").click(displayContactAdd);
 
-            container.append("<h4><a id='search-contacts-from-facebook' class='add-contact' href='#'>Search contacts from Facebook</a></h4>");
-            $("#search-contacts-from-facebook").click(displaySearchContactsFromFacebook);
+//            container.append("<h4><a id='search-contacts-from-facebook' class='add-contact' href='#'>Search contacts from Facebook</a></h4>");
+//            $("#search-contacts-from-facebook").click(displaySearchContactsFromFacebook);
 
 			container.append("<ul class='contact-list'>");
 
@@ -30,7 +32,7 @@ function displayContactsList(){
 
 				var organizationName = contact.organization ? contact.organization.name : "";
 
-				$("ul", container).append("<li><a class='edit' href='#' data-id='"+contact.id+"'>" + escapeHtml(contact.firstName) + " " +
+				$("ul", container).append("<li style='margin-bottom: 2%;'><a class='edit' href='#' data-id='"+contact.id+"'>" + escapeHtml(contact.firstName) + " " +
 											escapeHtml(contact.lastName) + "</a>  Organization: " + escapeHtml(organizationName) +
 											"  <a class='btn btn-danger btn-sml btn-delete delete' href='#' data-id='"+contact.id+"'>Delete</a> </li>");
 
@@ -566,4 +568,12 @@ function escapeHtml(aString) {
 	return String(aString).replace(/[&<>"'\/]/g, function (s) {
 		return entityMap[s];
 	});
+}
+
+function convertToDto(users) {
+    var dtoList = [];
+    for (var i = 0; i < users.length; i++) {
+        dtoList.push({id: users[i].id, name: users[i].firstName + ' ' + users[i].lastName});
+    }
+    return dtoList;
 }
